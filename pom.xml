@@ -14,6 +14,7 @@
     <modules>
         <module>plantOBS</module>
         <module>plantREST</module>
+        <module>plantrmq</module>
     </modules>
     <!--
         # Собрать всё в правильном порядке
