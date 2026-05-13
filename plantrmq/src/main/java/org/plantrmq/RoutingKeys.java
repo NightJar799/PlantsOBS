@@ -1,11 +1,11 @@
-package org.plantrmq.events;
+package org.plantrmq;
 
 public final class RoutingKeys {
 
     private RoutingKeys() {
     }
 
-    public static final String EXCHANGE = "books.events";
+    public static final String EXCHANGE = "plants.events";
 
     public static final String HOME_PLANT_CREATED = "homeplant.created";
     public static final String USER_CREATED = "user.created";

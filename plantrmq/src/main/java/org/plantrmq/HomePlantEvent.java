@@ -1,4 +1,4 @@
-package org.plantrmq.events;
+package org.plantrmq;
 
 public sealed interface HomePlantEvent {
 

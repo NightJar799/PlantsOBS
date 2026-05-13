@@ -1,4 +1,4 @@
-package org.plantrmq.events;
+package org.plantrmq;
 
 import java.time.Instant;
 import java.util.UUID;

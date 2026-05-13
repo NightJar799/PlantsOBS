@@ -1,4 +1,4 @@
-package org.plantrmq.events;
+package org.plantrmq;
 
 public sealed interface UserEvent {
     
@@ -16,7 +16,7 @@ public sealed interface UserEvent {
         String mail
     ) implements UserEvent {}
 
-    record Update(
+    record Updated(
         Long userId,
         String name,
         String mail,

@@ -1,4 +1,4 @@
-package org.plantrmq.events;
+package org.plantrmq;
 
 public record EventEnvelope<T>(
         EventMetadata metadata,

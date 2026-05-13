@@ -13,9 +13,26 @@
 
     <modules>
         <module>plantOBS</module>
+         <module>plantrmq</module>
         <module>plantREST</module>
-        <module>plantrmq</module>
+        <module>audit-service</module>
     </modules>
+
+    <properties>
+        <spring-boot.version>4.0.3</spring-boot.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
     <!--
         # Собрать всё в правильном порядке
         .\mvnw install
