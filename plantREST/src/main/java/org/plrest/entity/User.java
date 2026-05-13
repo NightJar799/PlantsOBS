@@ -1,4 +1,4 @@
-package org.obs.entity;
+package org.plrest.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

@@ -1,6 +1,6 @@
 package org.plrest.repositories;
 
-import org.obs.entity.GrowthCharacteristic;
+import org.plrest.entity.GrowthCharacteristic;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

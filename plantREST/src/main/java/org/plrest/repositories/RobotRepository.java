@@ -1,6 +1,6 @@
 package org.plrest.repositories;
 
-import org.obs.entity.Robot;
+import org.plrest.entity.Robot;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
