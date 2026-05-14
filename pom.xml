@@ -16,6 +16,7 @@
          <module>plantrmq</module>
         <module>plantREST</module>
         <module>audit-service</module>
+        <module>authREST</module>
     </modules>
 
     <properties>
