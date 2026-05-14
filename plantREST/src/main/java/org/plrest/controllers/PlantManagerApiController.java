@@ -6,7 +6,6 @@ import org.plrest.service.GrowthCharService;
 import org.plrest.service.PlantService;
 import org.plrest.service.RobotService;
 import org.plrest.assemblers.GrowthCharModelAssembler;
-import org.plrest.assemblers.RobotModelAssembler;
 import org.springframework.data.domain.Page;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
@@ -23,20 +22,17 @@ public class PlantManagerApiController implements PlantManagerApi {
     private final GrowthCharService growthCharService;
     private final RobotService robotService;
     private final GrowthCharModelAssembler growthCharModelAssembler;
-    private final RobotModelAssembler robotModelAssembler;
     private final PagedResourcesAssembler<List<RobotResponse>> pagedResourcesAssembler;
 
     public PlantManagerApiController(PlantService plantService,
                                      GrowthCharService growthCharService,
                                      RobotService robotService,
                                      GrowthCharModelAssembler growthCharModelAssembler,
-                                     RobotModelAssembler robotModelAssembler,
                                      PagedResourcesAssembler<List<RobotResponse>> pagedResourcesAssembler) {
         this.plantService = plantService;
         this.growthCharService = growthCharService;
         this.robotService = robotService;
         this.growthCharModelAssembler = growthCharModelAssembler;
-        this.robotModelAssembler = robotModelAssembler;
         this.pagedResourcesAssembler = pagedResourcesAssembler;
     }
 

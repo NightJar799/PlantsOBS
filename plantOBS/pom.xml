@@ -79,8 +79,6 @@
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
-            
-            <!-- НЕ используйте spring-boot-maven-plugin -->
         </plugins>
     </build>
 

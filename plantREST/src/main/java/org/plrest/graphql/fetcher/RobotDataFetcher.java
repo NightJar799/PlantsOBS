@@ -12,18 +12,15 @@ import org.plrest.graphql.types.PageInfoGql;
 import org.plrest.graphql.types.CreateRobotInputGql;
 import org.plrest.graphql.types.UpdateRobotInputGql;
 import org.plrest.service.RobotService;
-import org.plrest.service.GrowthCharService;
 import org.springframework.data.domain.Page;
 
 @DgsComponent
 public class RobotDataFetcher {
 
     private final RobotService robotService;
-    private final GrowthCharService growthCharService;
 
-    public RobotDataFetcher(RobotService robotService, GrowthCharService growthCharService) {
+    public RobotDataFetcher(RobotService robotService) {
         this.robotService = robotService;
-        this.growthCharService = growthCharService;
     }
 
     @DgsQuery

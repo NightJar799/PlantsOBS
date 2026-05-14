@@ -2,7 +2,6 @@ package org.plrest.exception;
 
 import org.obs.dto.ErrorResponse;
 import org.obs.exceptions.ResourceNotFoundException;
-import org.obs.exceptions.IsbnAlreadyExistsException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,13 +12,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import java.time.Instant;
 import java.util.List;
 
-/**
- * Централизованная обработка исключений.
- *
- * <p>Преобразует доменные исключения в ответы формата RFC 7807 Problem Details
- * ({@link ErrorResponse}). Это обеспечивает единообразный, машиночитаемый формат
- * ошибок для всех клиентов API.
- */
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -34,22 +26,6 @@ public class GlobalExceptionHandler {
                         HttpStatus.NOT_FOUND.value(),
                         BASE_PROBLEM_URI + "resource-not-found",
                         "Ресурс не найден",
-                        ex.getMessage(),
-                        req.getRequestURI(),
-                        Instant.now(),
-                        null
-                ));
-    }
-
-    @ExceptionHandler(IsbnAlreadyExistsException.class)
-    public ResponseEntity<ErrorResponse> handleIsbnConflict(IsbnAlreadyExistsException ex,
-                                                            HttpServletRequest req) {
-        return ResponseEntity
-                .status(HttpStatus.CONFLICT)
-                .body(new ErrorResponse(
-                        HttpStatus.CONFLICT.value(),
-                        BASE_PROBLEM_URI + "isbn-conflict",
-                        "Конфликт ISBN",
                         ex.getMessage(),
                         req.getRequestURI(),
                         Instant.now(),

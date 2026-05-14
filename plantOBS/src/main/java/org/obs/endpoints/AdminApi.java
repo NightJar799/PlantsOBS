@@ -11,8 +11,6 @@ import jakarta.validation.Valid;
 import org.obs.config.PlantsApiContractConfig;
 import org.obs.dto.PlantSampleRequest;
 import org.obs.dto.PlantsSampleResponse;
-import org.obs.dto.UserRequest;
-import org.obs.dto.UserResponse;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
@@ -102,51 +100,5 @@ public interface AdminApi {
     ResponseEntity<EntityModel<PlantSampleRequest>> putSample(
             @Parameter(description = "ID растения", required = true, example = "1") @PathVariable Long plantId,
                                                               @Valid @RequestBody PlantSampleRequest request);
-
-        @Operation(
-            summary = "Заргестрировать новго пользователя",
-            security = @SecurityRequirement(name = PlantsApiContractConfig.SECURITY_SCHEME_BEARER)
-    )
-    @ApiResponse(responseCode = "201", description = "Новый пользователь был успешно добавлен.")
-    @ApiResponse(responseCode = "400", description = "Ошибка валидации",
-            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    @PostMapping(value = "users", consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)
-    ResponseEntity<EntityModel<UserResponse>> createUser(@Valid @RequestBody UserRequest request);
-
-        @Operation(
-                summary = "Изменить пользователя",
-                security = @SecurityRequirement(name = PlantsApiContractConfig.SECURITY_SCHEME_BEARER))
-    @ApiResponse(responseCode = "201", description = "Пользователь изменён. Location header содержит URI нового ресурса.")
-    @ApiResponse(responseCode = "400", description = "Ошибка валидации",
-            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    @PatchMapping(value = "users/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)
-    ResponseEntity<EntityModel<UserResponse>> patchUser(
-            @Parameter(description = "ID пользователя", required = true, example = "1") @PathVariable Long userId,
-                @Valid @RequestBody UserRequest request);
-
-        @Operation(
-            summary = "Полностью изменить пользователя",
-            security = @SecurityRequirement(name = PlantsApiContractConfig.SECURITY_SCHEME_BEARER))
-    @ApiResponse(responseCode = "201", description = "Пользователь полностью изменён. Location header содержит URI нового ресурса.")
-    @ApiResponse(responseCode = "400", description = "Ошибка валидации",
-            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    @PutMapping(value = "users/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)
-    ResponseEntity<EntityModel<UserResponse>> putUser(
-            @Parameter(description = "ID пользователя", required = true, example = "1") @PathVariable Long userId,
-                @Valid @RequestBody UserRequest request);
-        
-        @Operation(
-            summary = "Удалить пользователя",
-            security = @SecurityRequirement(name = PlantsApiContractConfig.SECURITY_SCHEME_BEARER))
-    @ApiResponse(responseCode = "201", description = "Пользователь удалён.")
-    @ApiResponse(responseCode = "400", description = "Ошибка валидации",
-            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    @PutMapping(value = "users/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)
-    void deleteUser(@Parameter(description = "ID пользователя", required = true, example = "1") @PathVariable Long userId,
-                        @Valid @RequestBody UserRequest request);
 
 }

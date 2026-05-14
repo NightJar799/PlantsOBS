@@ -27,7 +27,6 @@ public class InMemoryStorage {
 
     @PostConstruct
     public void init() {
-        // 1. Create Plant Sample (template)
         Long sampleId = plantSampleSequence.incrementAndGet();
         PlantsSampleResponse plantSample = PlantsSampleResponse.builder()
                 .id(sampleId)
@@ -39,7 +38,6 @@ public class InMemoryStorage {
                 .build();
         plantSamples.put(sampleId, plantSample);
 
-        // 2. Create Home Plant (linked to sampleId)
         Long homePlantId = homePlantSequence.incrementAndGet();
         HomePlantResponse homePlant = HomePlantResponse.builder()
                 .id(homePlantId)
@@ -51,7 +49,6 @@ public class InMemoryStorage {
                 .build();
         homePlants.put(homePlantId, homePlant);
 
-        // 3. Create Growth Characteristics (linked to the same plant conceptually)
         Long growthCharId = growthCharSequence.incrementAndGet();
         GrowthCharResponse growthChar = GrowthCharResponse.builder()
                 .id(growthCharId)
@@ -65,8 +62,6 @@ public class InMemoryStorage {
                 .build();
         growthChars.put(growthCharId, growthChar);
 
-        // 4. Create two Robots (sensors) for the same homePlantId
-        // Robot 1 - Temperature sensor
         Long robotId1 = robotSequence.incrementAndGet();
         RobotResponse robot1 = RobotResponse.builder()
                 .id(robotId1)
@@ -78,7 +73,6 @@ public class InMemoryStorage {
                 .build();
         robots.put(robotId1, robot1);
 
-        // Robot 2 - Soil moisture sensor
         Long robotId2 = robotSequence.incrementAndGet();
         RobotResponse robot2 = RobotResponse.builder()
                 .id(robotId2)
@@ -90,16 +84,11 @@ public class InMemoryStorage {
                 .build();
         robots.put(robotId2, robot2);
 
-        // 5. Link robots to the plant (plantRobots: key = plantId, value = map of robotId -> RobotResponse)
         ConcurrentHashMap<Long, RobotResponse> robotsForPlant = new ConcurrentHashMap<>();
         robotsForPlant.put(robotId1, robot1);
         robotsForPlant.put(robotId2, robot2);
         plantRobots.put(homePlantId, robotsForPlant);
-
-        // 6. Link the latest growth characteristic to a specific robot (example)
-        // Here we say that robot1 (temperature sensor) has latest growth char ID = growthCharId
         robotLatestGrowthChar.put(robotId1, growthCharId);
-        // robot2 could have the same or different growth char
         robotLatestGrowthChar.put(robotId2, growthCharId);
     }
 }
