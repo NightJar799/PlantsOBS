@@ -159,7 +159,7 @@ public interface UserApi {
     @ApiResponse(responseCode = "204", description = "Датчик удалён")
     @ApiResponse(responseCode = "404", description = "Датчик или растение не найдены",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    @DeleteMapping("/{plantId}/robots")
+    @DeleteMapping("/{plantId}/robots/{robotId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void removeRobotFromPlant(
             @Parameter(description = "ID датчика", required = true, example = "10") @PathVariable Long robotId,
@@ -172,7 +172,7 @@ public interface UserApi {
             security = @SecurityRequirement(name = PlantsApiContractConfig.SECURITY_SCHEME_BEARER)
     )
     @ApiResponse(responseCode = "200", description = "Данные обновлены")
-    @PutMapping(value = "/{plantId}/robots", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/{plantId}/robots/{robotId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     EntityModel<RobotResponse> replaceRobotData(
             @Parameter(description = "ID растения", required = true, example = "1") @PathVariable Long plantId,
             @Parameter(description = "ID датчика", required = true, example = "10") @PathVariable Long robotId,
@@ -185,7 +185,7 @@ public interface UserApi {
             security = @SecurityRequirement(name = PlantsApiContractConfig.SECURITY_SCHEME_BEARER)
     )
     @ApiResponse(responseCode = "200", description = "Данные обновлены")
-    @PatchMapping(value = "/{plantId}/robots", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PatchMapping(value = "/{plantId}/robots/{robotId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     EntityModel<RobotResponse> changeRobotData(
             @Parameter(description = "ID растения", required = true, example = "1") @PathVariable Long plantId,
             @Parameter(description = "ID датчика", required = true, example = "10") @PathVariable Long robotId,

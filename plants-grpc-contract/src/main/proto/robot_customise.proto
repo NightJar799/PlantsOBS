@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+option java_package = "org.robotContract.grpc";
+
+option java_multiple_files = true;
+
+package plantscustomise;
+
+service RobotCustomise {
+
+    rpc changeRobotMeasurment (RobotCustomisationRequest) returns (RobotCustomisationResponse);
+}
+
+message RobotCustomisationRequest {
+    int64  robot_id         = 1;
+    string name             = 2;
+    string measurment       = 3;
+    int64  plant_id         = 4;
+    string ChosenMeasurment = 5;
+}
+
+message RobotCustomisationResponse {
+   int64  robot_id          = 1;
+    string name             = 2; 
+    string measurment       = 3;  
+    int64  plant_id         = 4;  
+    string ChosenMeasurment = 5;  
+}

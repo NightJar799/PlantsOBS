@@ -81,6 +81,10 @@ docker-compose up
 
 `mvn -pl authREST spring-boot:run`
 
+`mvn -pl grpc-analytics-server spring-boot:run`
+
+`mvn -pl grpc-robot-customise-client spring-boot:run`
+
 `-pl - необходимы для запуска только отдельного модуля`
 
 ## Тестирование

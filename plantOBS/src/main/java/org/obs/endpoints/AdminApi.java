@@ -72,8 +72,7 @@ public interface AdminApi {
     @DeleteMapping(value = "samples/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     ResponseEntity<EntityModel<PlantSampleRequest>> deleteSample(
-            @Parameter(description = "ID растения", required = true, example = "1") @PathVariable Long plantId,
-                                                                 @Valid @RequestBody PlantSampleRequest request);
+            @Parameter(description = "ID растения", required = true, example = "1") @PathVariable Long id);
 
     @Operation(
             summary = "Изменить шаблон растения",
@@ -85,7 +84,7 @@ public interface AdminApi {
     @PatchMapping(value = "samples/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     ResponseEntity<EntityModel<PlantSampleRequest>> patchSample(
-            @Parameter(description = "ID растения", required = true, example = "1") @PathVariable Long plantId,
+            @Parameter(description = "ID растения", required = true, example = "1") @PathVariable Long id,
                                                                 @Valid @RequestBody PlantSampleRequest request);
 
     @Operation(
@@ -98,7 +97,7 @@ public interface AdminApi {
     @PutMapping(value = "samples/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     ResponseEntity<EntityModel<PlantSampleRequest>> putSample(
-            @Parameter(description = "ID растения", required = true, example = "1") @PathVariable Long plantId,
+            @Parameter(description = "ID растения", required = true, example = "1") @PathVariable Long id,
                                                               @Valid @RequestBody PlantSampleRequest request);
 
 }
