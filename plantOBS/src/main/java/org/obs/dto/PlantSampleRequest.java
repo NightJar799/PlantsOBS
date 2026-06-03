@@ -1,6 +1,8 @@
 package org.obs.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -28,7 +30,8 @@ public record PlantSampleRequest(
         String flower,
 
         @Schema(description = "Сложность выращивания", example = "5" , requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-        @Size(max = 10, message = "Число сложности от 1 до 10")
+        @Min(value = 1, message = "Сложность должна быть от 1 до 10")
+        @Max(value = 10, message = "Сложность должна быть от 1 до 10")
         Integer difficulty,
 
         @Schema(description = "Ссылка на Wikipedia", example = "https://ru.wikipedia.org/wiki/Сосна")

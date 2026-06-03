@@ -10,6 +10,7 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -48,7 +49,7 @@ public class AdminApiController implements AdminApi {
     }
 
     @Override
-    public ResponseEntity<EntityModel<PlantSampleRequest>> deleteSample(Long plantId, PlantSampleRequest request) {
+    public ResponseEntity<EntityModel<PlantSampleRequest>> deleteSample(Long plantId) {
         plantSampleService.delete(plantId);
         return ResponseEntity.noContent().build();
     }
@@ -66,4 +67,9 @@ public class AdminApiController implements AdminApi {
         EntityModel<PlantsSampleResponse> model = plantSampleModelAssembler.toModel(updated);
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/test")
+public ResponseEntity<String> test() {
+    return ResponseEntity.ok("OK");
+}
 }

@@ -55,7 +55,7 @@ public interface RobotApi {
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @ApiResponse(responseCode = "404", description = "Растение не найдено",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    @GetMapping(value = "/{robotId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{robotId}")
     @ResponseStatus(HttpStatus.FOUND)
     ResponseEntity<EntityModel<RobotResponse>> getRobotByID(
             @Parameter(description = "ID датчик", required = true, example = "1") @PathVariable Long robotId

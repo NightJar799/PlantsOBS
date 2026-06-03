@@ -4,7 +4,11 @@ import org.obs.dto.GrowthCharResponse;
 import org.obs.dto.RobotRequest;
 import org.obs.dto.RobotResponse;
 import org.obs.exceptions.ResourceNotFoundException;
+import org.plantrmq.EventEnvelope;
+import org.plantrmq.RobotEvent;
+import org.plantrmq.RoutingKeys;
 import org.plrest.storage.InMemoryStorage;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -19,10 +23,12 @@ public class RobotService {
 
     private final InMemoryStorage storage;
     private final PlantService plantService;
+    private final RabbitTemplate rabbitTemplate;
 
-    public RobotService(InMemoryStorage storage, PlantService plantService) {
+    public RobotService(InMemoryStorage storage, PlantService plantService, RabbitTemplate rabbitTemplate) {
         this.storage = storage;
         this.plantService = plantService;
+        this.rabbitTemplate = rabbitTemplate;
     }
 
     public RobotResponse findById(Long id) {
@@ -50,9 +56,8 @@ public class RobotService {
         return new PageImpl<>(content, PageRequest.of(page, size), robots.size());
     }
 
-    public RobotResponse createAndBind(Long plantId, RobotRequest request) {
+        public RobotResponse createAndBind(Long plantId, RobotRequest request) {
         plantService.findById(plantId);
-
         long id = storage.robotSequence.incrementAndGet();
         RobotResponse robot = RobotResponse.builder()
                 .id(id)
@@ -62,11 +67,24 @@ public class RobotService {
                 .name(request.name())
                 .plantId(plantId)
                 .build();
-
-
         storage.robots.put(id, robot);
-        storage.plantRobots.computeIfAbsent(plantId, k -> new ConcurrentHashMap<>())
-                .put(id, robot);
+        storage.plantRobots.computeIfAbsent(plantId, k -> new ConcurrentHashMap<>()).put(id, robot);
+
+        // Публикуем событие
+        RobotEvent.Created event = new RobotEvent.Created(
+                id,
+                robot.getName(),
+                String.valueOf(robot.getSensorType()),
+                robot.getMeasuredCharacteristic(),
+                robot.getUsedCharacteristic(),
+                plantId
+        );
+        EventEnvelope<RobotEvent> envelope = EventEnvelope.wrap(
+                event,
+                "plantOBS",
+                RoutingKeys.ROBOT_CREATED
+        );
+        rabbitTemplate.convertAndSend(RoutingKeys.EXCHANGE, RoutingKeys.ROBOT_CREATED, envelope);
 
         return robot;
     }

@@ -13,7 +13,11 @@
 
     <modules>
         <module>plantOBS</module>
-         <module>plantrmq</module>
+        <module>plantrmq</module>
+        <module>plants-grpc-contract</module>
+    
+        <module>grpc-robot-customise-client</module>
+        <module>grpc-analytics-server</module>
         <module>plantREST</module>
         <module>audit-service</module>
         <module>authREST</module>
