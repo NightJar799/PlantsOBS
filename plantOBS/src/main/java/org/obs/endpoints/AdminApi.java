@@ -46,9 +46,9 @@ public interface AdminApi {
     @ApiResponse(responseCode = "200", description = "Шаблон найден")
     @ApiResponse(responseCode = "404", description = "Шаблон не найден",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    @GetMapping("samples/{id}")
+    @GetMapping("samples/{plantId}")
     EntityModel<PlantsSampleResponse> getPlantSampleById(
-            @Parameter(description = "ID шаблона", required = true, example = "1") @PathVariable Long id
+            @Parameter(description = "ID шаблона", required = true, example = "1") @PathVariable("plantId") Long plantId
     );
 
     @Operation(
@@ -70,10 +70,10 @@ public interface AdminApi {
     @ApiResponse(responseCode = "201", description = "Шаблон удалён. Location header содержит URI нового ресурса.")
     @ApiResponse(responseCode = "400", description = "Ошибка валидации",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    @DeleteMapping(value = "samples/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = "samples/{plantId}")
     @ResponseStatus(HttpStatus.CREATED)
     ResponseEntity<EntityModel<PlantsSampleResponse>> deleteSample(
-            @Parameter(description = "ID растения", required = true, example = "1") @PathVariable Long id);
+            @Parameter(description = "ID растения", required = true, example = "1") @PathVariable Long plantId);
 
     @Operation(
             summary = "Изменить шаблон растения",
@@ -82,10 +82,10 @@ public interface AdminApi {
     @ApiResponse(responseCode = "201", description = "Шаблон изменён. Location header содержит URI нового ресурса.")
     @ApiResponse(responseCode = "400", description = "Ошибка валидации",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    @PatchMapping(value = "samples/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PatchMapping(value = "samples/{plantId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     ResponseEntity<EntityModel<PlantsSampleResponse>> patchSample(
-            @Parameter(description = "ID растения", required = true, example = "1") @PathVariable Long id,
+            @Parameter(description = "ID растения", required = true, example = "1") @PathVariable Long plantId,
                                                                 @Valid @RequestBody PlantSampleRequest request);
 
     @Operation(
@@ -95,10 +95,10 @@ public interface AdminApi {
     @ApiResponse(responseCode = "201", description = "Шаблон полностью изменён. Location header содержит URI нового ресурса.")
     @ApiResponse(responseCode = "400", description = "Ошибка валидации",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    @PutMapping(value = "samples/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "samples/{plantId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     ResponseEntity<EntityModel<PlantsSampleResponse>> putSample(
-            @Parameter(description = "ID растения", required = true, example = "1") @PathVariable Long id,
+            @Parameter(description = "ID растения", required = true, example = "1") @PathVariable Long plantId,
                                                               @Valid @RequestBody PlantSampleRequest request);
 
 }

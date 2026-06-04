@@ -38,7 +38,7 @@ public interface RobotApi {
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @ApiResponse(responseCode = "404", description = "Растение не найдено",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    @PostMapping(value = "/{plantId}/{robotId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/{plantId}/{robotId}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     ResponseEntity<EntityModel<GrowthCharResponse>> sendDataToPlant(
             @Parameter(description = "ID растения", required = true, example = "1") @PathVariable Long plantId,

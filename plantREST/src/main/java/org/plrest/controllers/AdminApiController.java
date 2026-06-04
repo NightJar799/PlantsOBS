@@ -10,6 +10,7 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,8 +36,8 @@ public class AdminApiController implements AdminApi {
     }
 
     @Override
-    public EntityModel<PlantsSampleResponse> getPlantSampleById(Long id) {
-        return plantSampleModelAssembler.toModel(plantSampleService.findById(id));
+    public EntityModel<PlantsSampleResponse> getPlantSampleById(@PathVariable("plantId") Long plantId) {
+        return plantSampleModelAssembler.toModel(plantSampleService.findById(plantId));
     }
 
     @Override
@@ -45,27 +46,27 @@ public class AdminApiController implements AdminApi {
         EntityModel<PlantsSampleResponse> model = plantSampleModelAssembler.toModel(created);
         return ResponseEntity
                 .created(model.getRequiredLink("self").toUri())
-                .build();
+                .body(model);
     }
 
     @Override
-    public ResponseEntity<EntityModel<PlantsSampleResponse>> deleteSample(Long plantId) {
-        plantSampleService.delete(plantId);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<EntityModel<PlantsSampleResponse>> deleteSample(@PathVariable("plantId") Long plantId) {
+         EntityModel<PlantsSampleResponse> model = plantSampleModelAssembler.toModel(plantSampleService.delete(plantId));
+        return ResponseEntity.ok().body(model);
     }
 
     @Override
-    public ResponseEntity<EntityModel<PlantsSampleResponse>> patchSample(Long plantId, PlantSampleRequest request) {
+    public ResponseEntity<EntityModel<PlantsSampleResponse>> patchSample(@PathVariable("plantId") Long plantId, PlantSampleRequest request) {
         PlantsSampleResponse updated = plantSampleService.patch(plantId, request);
         EntityModel<PlantsSampleResponse> model = plantSampleModelAssembler.toModel(updated);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(model);
     }
 
     @Override
-    public ResponseEntity<EntityModel<PlantsSampleResponse>> putSample(Long plantId, PlantSampleRequest request) {
+    public ResponseEntity<EntityModel<PlantsSampleResponse>> putSample(@PathVariable("plantId") Long plantId, PlantSampleRequest request) {
         PlantsSampleResponse updated = plantSampleService.update(plantId, request);
         EntityModel<PlantsSampleResponse> model = plantSampleModelAssembler.toModel(updated);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(model);
     }
 
     @PostMapping("/test")
