@@ -30,7 +30,7 @@ public class RobotApiController implements RobotApi {
     }
 
     @Override
-    public ResponseEntity<EntityModel<GrowthCharResponse>> addRobotToPlant(Long plantId, Long robotId) {
+    public ResponseEntity<EntityModel<GrowthCharResponse>> sendDataToPlant(Long plantId, Long robotId) {
         plantService.findById(plantId);
         GrowthCharResponse data = robotService.addRobotToPlant(plantId, robotId);
         EntityModel<GrowthCharResponse> model = growthCharModelAssembler.toModel(data);

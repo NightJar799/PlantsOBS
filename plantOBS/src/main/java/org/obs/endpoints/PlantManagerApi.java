@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.obs.config.PlantsApiContractConfig;
 import org.obs.dto.*;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
@@ -37,33 +38,18 @@ public interface PlantManagerApi {
     @ApiResponse(responseCode = "404", description = "Растение не найдено",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @GetMapping("/{plantId}/environment")
-    PagedModel<EntityModel<List<RobotResponse>>> getPlantEnvironmentData(
-            @Parameter(description = "ID растения", required = true, example = "1") @PathVariable Long plantId,
-            @Parameter(description = "Номер страницы (0..N)", example = "0") @RequestParam(defaultValue = "0") int page
-    );
+    CollectionModel<RobotResponse> getPlantEnvironmentData(
+            @Parameter(description = "ID растения", required = true, example = "1") @PathVariable Long plantId);
 
     @Operation(
-            summary = "Получить характеристики растения со ссылкой на Wiki",
-            description = "Возвращает параметры роста растения с дополнительной ссылкой на Wiki",
-            security = @SecurityRequirement(name = PlantsApiContractConfig.SECURITY_SCHEME_BEARER)
-    )
-    @ApiResponse(responseCode = "200", description = "Характеристики получены")
-    @ApiResponse(responseCode = "404", description = "Растение не найдено",
-            content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    @GetMapping("/{plantId}/characteristics")
-    EntityModel<GrowthCharResponse> getPlantCharacteristics(
-            @Parameter(description = "ID растения", required = true, example = "1") @PathVariable Long plantId
-    );
-
-    @Operation(
-            summary = "Получить отчёт о состоянии растения",
+            summary = "Отправить отчёт о состоянии растения",
             description = "Позволяет отправить актуальные показатели роста растения пользователю",
             security = @SecurityRequirement(name = PlantsApiContractConfig.SECURITY_SCHEME_BEARER)
     )
     @ApiResponse(responseCode = "201", description = "Отчёт принят")
     @ApiResponse(responseCode = "400", description = "Ошибка валидации",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    @GetMapping(value = "/{plantId}/reports", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/{plantId}/report", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     ResponseEntity<EntityModel<GrowthCharResponse>> submitPlantReport(
             @Parameter(description = "ID растения", required = true, example = "1") @PathVariable Long plantId,
@@ -78,8 +64,6 @@ public interface PlantManagerApi {
     @ApiResponse(responseCode = "202", description = "Рекомендации приняты к обработке")
     @GetMapping(value = "/{plantId}/recommendations", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
-    ResponseEntity<Void> sendRecommendations(
-            @Parameter(description = "ID растения", required = true, example = "1") @PathVariable Long plantId,
-            @Valid @RequestBody GrowthCharRequest request
-    );
+    ResponseEntity<Void> getRecommendations(
+            @Parameter(description = "ID растения", required = true, example = "1") @PathVariable Long plantId);
 }

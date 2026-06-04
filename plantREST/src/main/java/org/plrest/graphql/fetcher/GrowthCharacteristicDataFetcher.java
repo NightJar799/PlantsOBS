@@ -43,8 +43,7 @@ public class GrowthCharacteristicDataFetcher {
             @InputArgument CreateGrowthCharInputGql input) {
         log.debug("Sending recommendations for plant: {}", plantId);
         growthCharService.sendRecommendations(
-                Long.parseLong(plantId),
-                toRequest(input)
+                Long.parseLong(plantId)
         );
         return true;
     }

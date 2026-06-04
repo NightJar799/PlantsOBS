@@ -6,8 +6,10 @@ import org.plrest.service.GrowthCharService;
 import org.plrest.service.PlantService;
 import org.plrest.service.RobotService;
 import org.plrest.assemblers.GrowthCharModelAssembler;
+import org.plrest.assemblers.RobotModelAssembler;
 import org.springframework.data.domain.Page;
 import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
@@ -23,30 +25,26 @@ public class PlantManagerApiController implements PlantManagerApi {
     private final RobotService robotService;
     private final GrowthCharModelAssembler growthCharModelAssembler;
     private final PagedResourcesAssembler<List<RobotResponse>> pagedResourcesAssembler;
+    private final RobotModelAssembler robotModelAssembler;
 
     public PlantManagerApiController(PlantService plantService,
                                      GrowthCharService growthCharService,
                                      RobotService robotService,
                                      GrowthCharModelAssembler growthCharModelAssembler,
-                                     PagedResourcesAssembler<List<RobotResponse>> pagedResourcesAssembler) {
+                                     PagedResourcesAssembler<List<RobotResponse>> pagedResourcesAssembler,
+                                     RobotModelAssembler robotModelAssembler) {
         this.plantService = plantService;
         this.growthCharService = growthCharService;
         this.robotService = robotService;
         this.growthCharModelAssembler = growthCharModelAssembler;
         this.pagedResourcesAssembler = pagedResourcesAssembler;
+        this.robotModelAssembler = robotModelAssembler;
     }
 
     @Override
-    public PagedModel<EntityModel<List<RobotResponse>>> getPlantEnvironmentData(Long plantId, int page) {
-        plantService.findById(plantId);
-        Page<RobotResponse> paged = robotService.findByPlantId(plantId, page, 20);
-        Page<List<RobotResponse>> wrappedPage = paged.map(List::of);
-        return pagedResourcesAssembler.toModel(wrappedPage);
-    }
-
-    @Override
-    public EntityModel<GrowthCharResponse> getPlantCharacteristics(Long plantId) {
-        return growthCharModelAssembler.toModel(growthCharService.findByPlantId(plantId));
+    public CollectionModel<RobotResponse> getPlantEnvironmentData(Long plantId) {
+        List<RobotResponse> robots = robotService.findByPlantId(plantId);
+        return CollectionModel.of(robots);
     }
 
     @Override
@@ -59,8 +57,8 @@ public class PlantManagerApiController implements PlantManagerApi {
     }
 
     @Override
-    public ResponseEntity<Void> sendRecommendations(Long plantId, GrowthCharRequest request) {
-        growthCharService.sendRecommendations(plantId, request);
+    public ResponseEntity<Void> getRecommendations(Long plantId) {
+        growthCharService.sendRecommendations(plantId);
         return ResponseEntity.accepted().build();
     }
 }

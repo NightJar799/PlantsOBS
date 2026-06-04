@@ -4,6 +4,10 @@ import com.netflix.graphql.dgs.DgsComponent;
 import com.netflix.graphql.dgs.DgsMutation;
 import com.netflix.graphql.dgs.DgsQuery;
 import com.netflix.graphql.dgs.InputArgument;
+
+import java.util.Collections;
+import java.util.List;
+
 import org.obs.dto.GrowthCharResponse;
 import org.obs.dto.RobotRequest;
 import org.obs.dto.RobotResponse;
@@ -29,21 +33,30 @@ public class RobotDataFetcher {
     }
 
     @DgsQuery
-    public RobotConnectionGql robotsByPlant(
-            @InputArgument String plantId,
-            @InputArgument Integer page,
-            @InputArgument Integer size) {
+public RobotConnectionGql robotsByPlant(
+        @InputArgument String plantId,
+        @InputArgument Integer page,
+        @InputArgument Integer size) {
 
-        int pageNum = page != null ? page : 0;
-        int pageSize = size != null ? size : 20;
+    int pageNum = page != null ? page : 0;
+    int pageSize = size != null ? size : 20;
 
-        Page<RobotResponse> paged = robotService.findByPlantId(Long.parseLong(plantId), pageNum, pageSize);
+    List<RobotResponse> allRobots = robotService.findByPlantId(Long.parseLong(plantId));
 
-        return new RobotConnectionGql(
-                paged.getContent(),
-                new PageInfoGql(paged.getNumber(), paged.getSize(), paged.getTotalPages(), paged.isLast()),
-                (int) paged.getTotalElements());
-    }
+    int start = pageNum * pageSize;
+    int end = Math.min(start + pageSize, allRobots.size());
+    boolean hasNext = end < allRobots.size();
+
+    List<RobotResponse> pagedContent = (start < allRobots.size()) 
+            ? allRobots.subList(start, end) 
+            : Collections.emptyList();
+
+    int totalPages = (int) Math.ceil((double) allRobots.size() / pageSize);
+    boolean isLast = (pageNum >= totalPages - 1) || allRobots.isEmpty();
+
+    PageInfoGql pageInfo = new PageInfoGql(pageNum, pageSize, totalPages, isLast);
+    return new RobotConnectionGql(pagedContent, pageInfo, allRobots.size());
+}
 
     @DgsMutation
     public RobotResponse createRobot(

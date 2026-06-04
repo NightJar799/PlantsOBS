@@ -85,8 +85,8 @@ public class PlantService {
         return patched;
     }
 
-    public void delete(Long id) {
-        findById(id);
+    public HomePlantResponse delete(Long id) {
+        HomePlantResponse homePlantResponse =  findById(id);
 
         ConcurrentHashMap<Long, RobotResponse> plantRobots = storage.plantRobots.get(id);
         if (plantRobots != null) {
@@ -97,6 +97,8 @@ public class PlantService {
         storage.growthChars.values().removeIf(gc -> gc.getId().equals(id));
 
         storage.homePlants.remove(id);
+
+        return homePlantResponse;
     }
 
     public void linkToSample(Long plantId, Long sampleId) {

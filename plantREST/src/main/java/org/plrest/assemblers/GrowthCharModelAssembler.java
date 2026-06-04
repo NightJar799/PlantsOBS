@@ -1,6 +1,9 @@
 package org.plrest.assemblers;
 
 import org.plrest.controllers.PlantManagerApiController;
+import org.plrest.controllers.RobotApiController;
+import org.plrest.controllers.UserApiController;
+import org.obs.dto.GrowthCharRequest;
 import org.obs.dto.GrowthCharResponse;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
@@ -14,9 +17,12 @@ public class GrowthCharModelAssembler implements RepresentationModelAssembler<Gr
     @Override
     public EntityModel<GrowthCharResponse> toModel(GrowthCharResponse growthChar) {
         return EntityModel.of(growthChar,
-                linkTo(methodOn(PlantManagerApiController.class).getPlantCharacteristics(growthChar.getId())).withSelfRel(),
-                linkTo(methodOn(PlantManagerApiController.class).getPlantEnvironmentData(growthChar.getId(), 0)).withRel("environment"),
-                linkTo(methodOn(PlantManagerApiController.class).submitPlantReport(growthChar.getId(), null)).withRel("submit")
+                linkTo(methodOn(PlantManagerApiController.class).
+                    submitPlantReport(growthChar.getId(), GrowthCharResponse.map(growthChar))).withRel("submit"),
+                linkTo(methodOn(RobotApiController.class).
+                    sendDataToPlant(growthChar.getId(), null)).withRel("robotSubmits"),
+                linkTo(methodOn(UserApiController.class).
+                    getPlantCharacteristics(growthChar.getId())).withRel("getPlantCharacetristic")    
         );
     }
 }

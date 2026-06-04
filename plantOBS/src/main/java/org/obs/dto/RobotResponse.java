@@ -13,6 +13,10 @@ import org.springframework.hateoas.server.core.Relation;
 @Relation(collectionRelation = "robots", itemRelation = "robot")
 @Schema(description = "Информация о роботе (ответ API)")
 public class RobotResponse extends RepresentationModel<RobotResponse> {
+    public static RobotRequest map(RobotResponse response) {
+        return new RobotRequest(response.getId(), response.getPlantId(), response.getName(),
+             response.getSensorType(), response.getMeasuredCharacteristic(), response.getUsedCharacteristic());
+    }
 
     @Schema(description = "Уникальный идентификатор робота", example = "1")
     private final Long id;

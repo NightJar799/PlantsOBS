@@ -74,7 +74,7 @@ public interface UserApi {
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    ResponseEntity<EntityModel<HomePlantResponse>> createPlant(@Valid @RequestBody HomePlantRequest request);
+    EntityModel<HomePlantResponse> createPlant(@Valid @RequestBody HomePlantRequest request);
 
     @Operation(
             summary = "Изменить растение (полное обновление)",
@@ -117,7 +117,7 @@ public interface UserApi {
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @DeleteMapping("/{idPlant}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void deletePlant(
+    EntityModel<HomePlantResponse> deletePlant(
             @Parameter(description = "ID растения", required = true, example = "1") @PathVariable Long idPlant
     );
 
@@ -161,7 +161,7 @@ public interface UserApi {
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @DeleteMapping("/{plantId}/robots/{robotId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void removeRobotFromPlant(
+    EntityModel<RobotResponse> removeRobotFromPlant(
             @Parameter(description = "ID датчика", required = true, example = "10") @PathVariable Long robotId,
             @Parameter(description = "ID растения", required = true, example = "1") @PathVariable Long plantId
     );
@@ -173,7 +173,7 @@ public interface UserApi {
     )
     @ApiResponse(responseCode = "200", description = "Данные обновлены")
     @PutMapping(value = "/{plantId}/robots/{robotId}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    EntityModel<RobotResponse> replaceRobotData(
+    EntityModel<RobotResponse> putRobotData(
             @Parameter(description = "ID растения", required = true, example = "1") @PathVariable Long plantId,
             @Parameter(description = "ID датчика", required = true, example = "10") @PathVariable Long robotId,
             @Valid @RequestBody RobotRequest request
@@ -186,7 +186,7 @@ public interface UserApi {
     )
     @ApiResponse(responseCode = "200", description = "Данные обновлены")
     @PatchMapping(value = "/{plantId}/robots/{robotId}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    EntityModel<RobotResponse> changeRobotData(
+    EntityModel<RobotResponse> patchRobotData(
             @Parameter(description = "ID растения", required = true, example = "1") @PathVariable Long plantId,
             @Parameter(description = "ID датчика", required = true, example = "10") @PathVariable Long robotId,
             @Valid @RequestBody RobotRequest request

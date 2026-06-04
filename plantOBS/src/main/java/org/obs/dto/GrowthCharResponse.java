@@ -14,6 +14,11 @@ import org.springframework.hateoas.server.core.Relation;
 @Schema(description = "Информация о параметрах роста (ответ API)")
 public class GrowthCharResponse extends RepresentationModel<GrowthCharResponse> {
 
+    public static GrowthCharRequest map(GrowthCharResponse response) {
+        return new GrowthCharRequest(response.id, response.lx, response.water, response.heat,
+             response.air, response.nitrogen, response.soilPh, response.humidity);
+    }
+
     @Schema(description = "Уникальный идентификатор примера био-характеристик", example = "1")
     private final Long id;
 

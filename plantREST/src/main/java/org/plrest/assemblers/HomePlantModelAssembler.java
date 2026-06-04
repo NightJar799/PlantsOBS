@@ -15,11 +15,14 @@ public class HomePlantModelAssembler implements RepresentationModelAssembler<Hom
     @Override
     public EntityModel<HomePlantResponse> toModel(HomePlantResponse plant) {
         EntityModel<HomePlantResponse> model = EntityModel.of(plant,
-                linkTo(methodOn(UserApiController.class).getPlantById(plant.getId())).withSelfRel(),
-                linkTo(methodOn(UserApiController.class).getAllPlants(0, 20)).withRel("collection")
-                // linkTo(methodOn(UserApiController.class).updatePlant(plant.getId(), null)).withRel("update"),
-                // linkTo(methodOn(UserApiController.class).patchPlant(plant.getId(), null)).withRel("patch")
-                //linkTo(methodOn(UserApiController.class).deletePlant(plant.getId())).withRel("delete")
+                linkTo(methodOn(UserApiController.class).
+                    getPlantById(plant.getId())).withSelfRel(),
+                linkTo(methodOn(UserApiController.class).
+                    updatePlant(plant.getId(), null)).withRel("update"),
+                linkTo(methodOn(UserApiController.class).
+                    patchPlant(plant.getId(), null)).withRel("patch"),
+                linkTo(methodOn(UserApiController.class).
+                    deletePlant(plant.getId())).withRel("delete")
         );
 
         if (plant.getId() != null) {

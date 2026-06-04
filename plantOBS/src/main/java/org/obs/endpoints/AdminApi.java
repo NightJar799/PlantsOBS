@@ -60,7 +60,8 @@ public interface AdminApi {
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @PostMapping(value = "samples", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    ResponseEntity<EntityModel<PlantSampleRequest>> createSample(@Valid @RequestBody PlantSampleRequest request);
+    ResponseEntity<EntityModel<PlantsSampleResponse>> createSample(
+                @Valid @RequestBody PlantSampleRequest request);
 
     @Operation(
             summary = "Удалить шаблон растения",
@@ -71,7 +72,7 @@ public interface AdminApi {
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @DeleteMapping(value = "samples/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    ResponseEntity<EntityModel<PlantSampleRequest>> deleteSample(
+    ResponseEntity<EntityModel<PlantsSampleResponse>> deleteSample(
             @Parameter(description = "ID растения", required = true, example = "1") @PathVariable Long id);
 
     @Operation(
@@ -83,7 +84,7 @@ public interface AdminApi {
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @PatchMapping(value = "samples/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    ResponseEntity<EntityModel<PlantSampleRequest>> patchSample(
+    ResponseEntity<EntityModel<PlantsSampleResponse>> patchSample(
             @Parameter(description = "ID растения", required = true, example = "1") @PathVariable Long id,
                                                                 @Valid @RequestBody PlantSampleRequest request);
 
@@ -96,7 +97,7 @@ public interface AdminApi {
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @PutMapping(value = "samples/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    ResponseEntity<EntityModel<PlantSampleRequest>> putSample(
+    ResponseEntity<EntityModel<PlantsSampleResponse>> putSample(
             @Parameter(description = "ID растения", required = true, example = "1") @PathVariable Long id,
                                                               @Valid @RequestBody PlantSampleRequest request);
 

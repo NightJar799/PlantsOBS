@@ -47,7 +47,6 @@ public class UserApiController implements UserApi {
 
     @Override
     public EntityModel<GrowthCharResponse> getPlantCharacteristics(Long plantId) {
-        // Возвращает характеристики растения (можно заменить на реальный сервис)
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
@@ -63,12 +62,9 @@ public class UserApiController implements UserApi {
     }
 
     @Override
-    public ResponseEntity<EntityModel<HomePlantResponse>> createPlant(HomePlantRequest request) {
+    public EntityModel<HomePlantResponse> createPlant(HomePlantRequest request) {
         HomePlantResponse created = plantService.create(request);
-        EntityModel<HomePlantResponse> model = homePlantModelAssembler.toModel(created);
-        return ResponseEntity
-                .created(model.getRequiredLink("self").toUri())
-                .body(model);
+        return homePlantModelAssembler.toModel(created);
     }
 
     @Override
@@ -82,8 +78,9 @@ public class UserApiController implements UserApi {
     }
 
     @Override
-    public void deletePlant(Long idPlant) {
-        plantService.delete(idPlant);
+    public EntityModel<HomePlantResponse> deletePlant(Long idPlant) {
+        HomePlantResponse homepPlant = plantService.delete(idPlant);
+        return homePlantModelAssembler.toModel(homepPlant);
     }
 
     @Override
@@ -103,17 +100,18 @@ public class UserApiController implements UserApi {
     }
 
     @Override
-    public void removeRobotFromPlant(Long robotId, Long plantId) {
-        robotService.unbind(robotId, plantId);
+    public EntityModel<RobotResponse> removeRobotFromPlant(Long robotId, Long plantId) {
+        RobotResponse robot = robotService.unbind(robotId, plantId);
+        return robotModelAssembler.toModel(robot);
     }
 
     @Override
-    public EntityModel<RobotResponse> replaceRobotData(Long plantId, Long robotId, RobotRequest request) {
+    public EntityModel<RobotResponse> putRobotData(Long plantId, Long robotId, RobotRequest request) {
         return robotModelAssembler.toModel(robotService.replace(plantId, robotId, request));
     }
 
     @Override
-    public EntityModel<RobotResponse> changeRobotData(Long plantId, Long robotId, RobotRequest request) {
+    public EntityModel<RobotResponse> patchRobotData(Long plantId, Long robotId, RobotRequest request) {
         return robotModelAssembler.toModel(robotService.patch(plantId, robotId, request));
     }
 }

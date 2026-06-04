@@ -44,7 +44,7 @@ public class GrowthCharService {
         return response;
     }
 
-    public void sendRecommendations(Long plantId, GrowthCharRequest request) {
+    public void sendRecommendations(Long plantId) {
         plantService.findById(plantId);
     }
 
