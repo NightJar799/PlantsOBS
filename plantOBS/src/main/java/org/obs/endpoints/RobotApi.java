@@ -40,7 +40,7 @@ public interface RobotApi {
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @PostMapping(value = "/{plantId}/{robotId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
-    ResponseEntity<EntityModel<GrowthCharResponse>> addRobotToPlant(
+    ResponseEntity<EntityModel<GrowthCharResponse>> sendDataToPlant(
             @Parameter(description = "ID растения", required = true, example = "1") @PathVariable Long plantId,
             @Parameter(description = "ID датчика", required = true, example = "1") @PathVariable Long robotId
     );

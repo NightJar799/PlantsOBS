@@ -40,7 +40,7 @@ public class AdminApiController implements AdminApi {
     }
 
     @Override
-    public ResponseEntity<EntityModel<PlantSampleRequest>> createSample(PlantSampleRequest request) {
+    public ResponseEntity<EntityModel<PlantsSampleResponse>> createSample(PlantSampleRequest request) {
         PlantsSampleResponse created = plantSampleService.create(request);
         EntityModel<PlantsSampleResponse> model = plantSampleModelAssembler.toModel(created);
         return ResponseEntity
@@ -49,20 +49,20 @@ public class AdminApiController implements AdminApi {
     }
 
     @Override
-    public ResponseEntity<EntityModel<PlantSampleRequest>> deleteSample(Long plantId) {
+    public ResponseEntity<EntityModel<PlantsSampleResponse>> deleteSample(Long plantId) {
         plantSampleService.delete(plantId);
         return ResponseEntity.noContent().build();
     }
 
     @Override
-    public ResponseEntity<EntityModel<PlantSampleRequest>> patchSample(Long plantId, PlantSampleRequest request) {
+    public ResponseEntity<EntityModel<PlantsSampleResponse>> patchSample(Long plantId, PlantSampleRequest request) {
         PlantsSampleResponse updated = plantSampleService.patch(plantId, request);
         EntityModel<PlantsSampleResponse> model = plantSampleModelAssembler.toModel(updated);
         return ResponseEntity.ok().build();
     }
 
     @Override
-    public ResponseEntity<EntityModel<PlantSampleRequest>> putSample(Long plantId, PlantSampleRequest request) {
+    public ResponseEntity<EntityModel<PlantsSampleResponse>> putSample(Long plantId, PlantSampleRequest request) {
         PlantsSampleResponse updated = plantSampleService.update(plantId, request);
         EntityModel<PlantsSampleResponse> model = plantSampleModelAssembler.toModel(updated);
         return ResponseEntity.ok().build();

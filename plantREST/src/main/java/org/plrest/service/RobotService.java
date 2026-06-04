@@ -39,7 +39,7 @@ public class RobotService {
         return robot;
     }
 
-    public Page<RobotResponse> findByPlantId(Long plantId, int page, int size) {
+    public List<RobotResponse> findByPlantId(Long plantId) {
         plantService.findById(plantId);
 
         ConcurrentHashMap<Long, RobotResponse> plantRobots = storage.plantRobots.get(plantId);
@@ -49,11 +49,7 @@ public class RobotService {
 
         robots.sort(Comparator.comparingLong(RobotResponse::getId));
 
-        int start = page * size;
-        int end = Math.min(start + size, robots.size());
-        List<RobotResponse> content = start >= robots.size() ? List.of() : robots.subList(start, end);
-
-        return new PageImpl<>(content, PageRequest.of(page, size), robots.size());
+        return robots;
     }
 
         public RobotResponse createAndBind(Long plantId, RobotRequest request) {
@@ -109,13 +105,14 @@ public class RobotService {
         throw new ResourceNotFoundException("No growth data for robot", robotId);
     }
 
-    public void unbind(Long robotId, Long plantId) {
+    public RobotResponse unbind(Long robotId, Long plantId) {
         plantService.findById(plantId);
-        findById(robotId);
+        RobotResponse robot = findById(robotId);
 
         ConcurrentHashMap<Long, RobotResponse> plantRobots = storage.plantRobots.get(plantId);
         if (plantRobots != null && plantRobots.remove(robotId) != null) {
         }
+        return robot;
     }
 
     public RobotResponse replace(Long plantId, Long robotId, RobotRequest request) {
