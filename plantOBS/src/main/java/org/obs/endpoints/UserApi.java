@@ -35,7 +35,7 @@ public interface UserApi {
     @ApiResponse(responseCode = "200", description = "Характеристики получены")
     @ApiResponse(responseCode = "404", description = "Растение не найдено",
             content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    @GetMapping("/{plantId}")
+    @GetMapping("/plantChar/{plantId}")
     EntityModel<GrowthCharResponse> getPlantCharacteristics(
             @Parameter(description = "ID растения", required = true, example = "1") @PathVariable Long plantId
     );

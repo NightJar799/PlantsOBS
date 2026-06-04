@@ -15,16 +15,13 @@ public record RobotRequest(
         Long plantId,
 
         @Schema(description = "Имя робота", example = "Сенсор-1", requiredMode = Schema.RequiredMode.REQUIRED)
-        @NotNull(message = "Имя не может быть пустым")
         @Size(max = 100, message = "Имя не может превышать 100 символов")
         String name,
 
         @Schema(description = "Количество отдваваемых характеристик", example = "2", requiredMode = Schema.RequiredMode.REQUIRED)
-        @NotNull(message = "Больше одной харакетристики")
         Integer sensorType,
 
         @Schema(description = "Измеряемая характеристика", example = "Температура", requiredMode = Schema.RequiredMode.REQUIRED)
-        @NotNull(message = "Характеристика не может быть пустой")
         @Size(max = 100, message = "Характеристика не может превышать 100 символов")
         String measuredCharacteristic,
 

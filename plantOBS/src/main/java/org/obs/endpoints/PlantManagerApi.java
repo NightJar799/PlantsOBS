@@ -62,7 +62,7 @@ public interface PlantManagerApi {
             security = @SecurityRequirement(name = PlantsApiContractConfig.SECURITY_SCHEME_BEARER)
     )
     @ApiResponse(responseCode = "202", description = "Рекомендации приняты к обработке")
-    @GetMapping(value = "/{plantId}/recommendations", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{plantId}/recommendations")
     @ResponseStatus(HttpStatus.ACCEPTED)
     ResponseEntity<Void> getRecommendations(
             @Parameter(description = "ID растения", required = true, example = "1") @PathVariable Long plantId);

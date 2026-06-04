@@ -22,7 +22,7 @@ public class GrowthCharModelAssembler implements RepresentationModelAssembler<Gr
                 linkTo(methodOn(RobotApiController.class).
                     sendDataToPlant(growthChar.getId(), null)).withRel("robotSubmits"),
                 linkTo(methodOn(UserApiController.class).
-                    getPlantCharacteristics(growthChar.getId())).withRel("getPlantCharacetristic")    
+                    getPlantCharacteristics(growthChar.getId())).withSelfRel()
         );
     }
 }
