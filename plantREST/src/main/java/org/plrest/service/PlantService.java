@@ -47,7 +47,7 @@ public class PlantService {
     public HomePlantResponse create(HomePlantRequest request) {
         long id = storage.homePlantSequence.incrementAndGet();
         HomePlantResponse plant = HomePlantResponse.builder()
-                .id(request.id())
+                .id(id)
                 .age(request.age())
                 .species(request.species())
                 .note(request.note())

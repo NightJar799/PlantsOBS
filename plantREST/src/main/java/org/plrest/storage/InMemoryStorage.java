@@ -52,6 +52,7 @@ public class InMemoryStorage {
         Long growthCharId = growthCharSequence.incrementAndGet();
         GrowthCharResponse growthChar = GrowthCharResponse.builder()
                 .id(growthCharId)
+                .homePlantId(homePlantId)
                 .lx(8000)
                 .water(70)
                 .heat(24)

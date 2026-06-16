@@ -1,5 +1,8 @@
 package org.plrest.graphql.types;
 
+import java.time.Instant;
+import java.time.OffsetDateTime;
+
 public record CreateGrowthCharInputGql(
         Integer lx,
         Integer water,
@@ -7,5 +10,6 @@ public record CreateGrowthCharInputGql(
         Integer air,
         Integer nitrogen,
         Double soilPh,
-        String humidity
+        String humidity,
+        OffsetDateTime recordedAt
 ) {}

@@ -1,5 +1,8 @@
 package org.plrest.service;
 
+import java.time.Instant;
+import java.time.OffsetDateTime;
+
 import org.obs.dto.GrowthCharRequest;
 import org.obs.dto.GrowthCharResponse;
 import org.obs.exceptions.ResourceNotFoundException;
@@ -21,7 +24,7 @@ public class GrowthCharService {
         plantService.findById(plantId);
 
         return storage.growthChars.values().stream()
-                .filter(gc -> gc.getId().equals(plantId))
+                .filter(gc -> gc.getHomePlantId().equals(plantId))
                 .findFirst()
                 .orElseThrow(() -> new ResourceNotFoundException("Growth characteristics for plant", plantId));
     }
@@ -31,7 +34,8 @@ public class GrowthCharService {
 
         long id = storage.growthCharSequence.incrementAndGet();
         GrowthCharResponse response = GrowthCharResponse.builder()
-                .id(plantId)
+                .id(id)
+                .homePlantId(plantId)
                 .lx(request.lx())
                 .soilPh(request.soilPh())
                 .air(request.air())
@@ -39,6 +43,7 @@ public class GrowthCharService {
                 .heat(request.heat())
                 .nitrogen(request.nitrogen())
                 .humidity(request.humidity())
+                .recordedAt(OffsetDateTime.now())
                 .build();
         storage.growthChars.put(id, response);
         return response;
@@ -53,7 +58,8 @@ public class GrowthCharService {
 
         long id = storage.growthCharSequence.incrementAndGet();
         GrowthCharResponse response = GrowthCharResponse.builder()
-                .id(plantId)
+                .id(id)
+                .homePlantId(plantId)
                 .lx(request.lx())
                 .soilPh(request.soilPh())
                 .air(request.air())
@@ -61,6 +67,7 @@ public class GrowthCharService {
                 .heat(request.heat())
                 .nitrogen(request.nitrogen())
                 .humidity(request.humidity())
+                .recordedAt(OffsetDateTime.now())
                 .build();
         storage.growthChars.put(id, response);
         storage.robotLatestGrowthChar.put(robotId, id);

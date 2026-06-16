@@ -1,5 +1,8 @@
 package org.obs.dto;
 
+import java.time.Instant;
+import java.time.OffsetDateTime;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -12,6 +15,10 @@ public record GrowthCharRequest(
         @Schema(description = "Уникальный идентификатор примера био-характеристик", example = "1")
         @NotNull(message = "Индифактор у био-характеристик растения должен быть")
         Long id,
+
+        @Schema(description = "Уникальный идентификатор растения с которым связана данная запись", example = "1")
+        @NotNull(message = "У био-характеристики растения должено быть растение, которому оно принадлежит")
+        Long homePlantId,
 
         @Schema(description = "Свет (в люксах)", example = "5000", requiredMode = Schema.RequiredMode.REQUIRED)
         @NotNull(message = "Освещение не может быть пустым")
@@ -44,6 +51,9 @@ public record GrowthCharRequest(
 
         @Schema(description = "Влажность", example = "50%", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         @Size(max = 7, message = "Число во влажности не может превышать 7 символов")
-        String humidity
+        String humidity,
+
+        @Schema(description = "Время создания", example = "2026-06-14T15:49:00.123456789Z", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+        OffsetDateTime recordedAt
 ) {
 }

@@ -51,13 +51,15 @@ public class GrowthCharacteristicDataFetcher {
     private GrowthCharRequest toRequest(CreateGrowthCharInputGql input) {
         return new GrowthCharRequest(
                 null,
+                null,
                 input.lx(),
                 input.water(),
                 input.heat(),
                 input.air(),
                 input.nitrogen(),
                 input.soilPh(),
-                input.humidity()
+                input.humidity(),
+                input.recordedAt()
         );
     }
 }
