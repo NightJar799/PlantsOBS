@@ -1,7 +1,7 @@
 {
   "id": 1,
   "plantId": 1,
-  "name": "yashkaRobot",
+  "name": "Ель робот",
   "sensorType": 3,
   "measuredCharacteristic": "humidity, light",
   "usedCharacteristic": ""

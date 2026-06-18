@@ -20,7 +20,7 @@
         <module>grpc-analytics-server</module>
         <module>plantREST</module>
         <module>audit-service</module>
-        <module>authREST</module>
+        <module>notification-service</module>
     </modules>
 
     <properties>

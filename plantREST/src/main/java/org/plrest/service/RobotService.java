@@ -66,7 +66,6 @@ public class RobotService {
         storage.robots.put(id, robot);
         storage.plantRobots.computeIfAbsent(plantId, k -> new ConcurrentHashMap<>()).put(id, robot);
 
-        // Публикуем событие
         RobotEvent.Created event = new RobotEvent.Created(
                 id,
                 robot.getName(),
@@ -102,6 +101,20 @@ public class RobotService {
             }
         }
 
+        RobotEvent.Updated event = new RobotEvent.Updated(
+                robotId,
+                robot.getName(),
+                String.valueOf(robot.getSensorType()),
+                robot.getMeasuredCharacteristic(),
+                robot.getUsedCharacteristic()
+        );
+        EventEnvelope<RobotEvent> envelope = EventEnvelope.wrap(
+                event,
+                "plantOBS",
+                RoutingKeys.ROBOT_UPDATED
+        );
+        rabbitTemplate.convertAndSend(RoutingKeys.EXCHANGE, RoutingKeys.ROBOT_UPDATED, envelope);
+
         throw new ResourceNotFoundException("No growth data for robot", robotId);
     }
 
@@ -112,6 +125,17 @@ public class RobotService {
         ConcurrentHashMap<Long, RobotResponse> plantRobots = storage.plantRobots.get(plantId);
         if (plantRobots != null && plantRobots.remove(robotId) != null) {
         }
+
+        RobotEvent.Deleted event = new RobotEvent.Deleted(
+                robotId,
+                robot.getName());
+        
+        EventEnvelope<RobotEvent> envelope = EventEnvelope.wrap(
+                event,
+                "plantOBS",
+                RoutingKeys.ROBOT_DELETED
+        );
+        rabbitTemplate.convertAndSend(RoutingKeys.EXCHANGE, RoutingKeys.ROBOT_DELETED, envelope);
         return robot;
     }
 
@@ -134,6 +158,20 @@ public class RobotService {
             plantRobots.put(robotId, updated);
         }
 
+        RobotEvent.Updated event = new RobotEvent.Updated(
+                robotId,
+                updated.getName(),
+                String.valueOf(updated.getSensorType()),
+                updated.getMeasuredCharacteristic(),
+                updated.getUsedCharacteristic()
+        );
+        EventEnvelope<RobotEvent> envelope = EventEnvelope.wrap(
+                event,
+                "plantOBS",
+                RoutingKeys.ROBOT_UPDATED
+        );
+        rabbitTemplate.convertAndSend(RoutingKeys.EXCHANGE, RoutingKeys.ROBOT_UPDATED, envelope);
+
         return updated;
     }
 
@@ -155,6 +193,20 @@ public class RobotService {
         if (plantRobots != null && plantRobots.containsKey(robotId)) {
             plantRobots.put(robotId, patched);
         }
+
+        RobotEvent.Updated event = new RobotEvent.Updated(
+                robotId,
+                patched.getName(),
+                String.valueOf(patched.getSensorType()),
+                patched.getMeasuredCharacteristic(),
+                patched.getUsedCharacteristic()
+        );
+        EventEnvelope<RobotEvent> envelope = EventEnvelope.wrap(
+                event,
+                "plantOBS",
+                RoutingKeys.ROBOT_UPDATED
+        );
+        rabbitTemplate.convertAndSend(RoutingKeys.EXCHANGE, RoutingKeys.ROBOT_UPDATED, envelope);
 
         return patched;
     }

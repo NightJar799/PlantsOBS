@@ -91,11 +91,11 @@ docker-compose up
 
 `mvn -pl plantREST spring-boot:run`
 
-`mvn -pl authREST spring-boot:run`
-
 `mvn -pl grpc-analytics-server spring-boot:run`
 
 `mvn -pl grpc-robot-customise-client spring-boot:run`
+
+`mvn -pl notification-service spring-boot:run`
 
 `-pl - необходимы для запуска только отдельного модуля`
 

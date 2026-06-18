@@ -72,6 +72,11 @@ public class RobotEventListener {
     public void handleRobotUpdated(Message message) {
         try {
             JsonNode root = jsonMapper.readTree(message.getBody());
+            EventMetadata meta = jsonMapper.treeToValue(root.get("metadata"), EventMetadata.class);
+            if ("grpc-robot-customise-client".equals(meta.source())) {
+                log.debug("Пропускаем своё же событие robot.updated");
+                return;
+            }
             RobotEvent.Updated updated = jsonMapper.treeToValue(root.get("payload"), RobotEvent.Updated.class);
 
             Long plantId = robotToPlant.get(updated.robotId());

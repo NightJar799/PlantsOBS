@@ -5,7 +5,6 @@ import org.audit.storage.AuditStorage;
 import org.plantrmq.EventMetadata;
 import org.plantrmq.HomePlantEvent;
 import org.plantrmq.RobotEvent;
-import org.plantrmq.UserEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;
@@ -68,8 +67,8 @@ public class AuditEventListener {
         return switch (eventType) {
             case "homeplant.created" -> {
                 HomePlantEvent.Created e = jsonMapper.treeToValue(payloadNode, HomePlantEvent.Created.class);
-                yield String.format("Создано растение «%s» (note: %s), владелец: %s",
-                        e.name(), e.note(), e.userId());
+                yield String.format("Создано растение «%s» (note: %s)",
+                        e.name(), e.note());
             }
             case "homeplant.updated" -> {
                HomePlantEvent.Updated e = jsonMapper.treeToValue(payloadNode, HomePlantEvent.Updated.class);
@@ -80,21 +79,6 @@ public class AuditEventListener {
                 HomePlantEvent.Deleted e = jsonMapper.treeToValue(payloadNode, HomePlantEvent.Deleted.class);
                 yield String.format("Удаления растения id=%d «%s»", e.plantId(), e.name());
             }
-            case "user.created" -> {
-                UserEvent.Created e = jsonMapper.treeToValue(payloadNode, UserEvent.Created.class);
-                yield String.format("Создан пользователь «%s» (телефон: %s)",
-                        e.name(), e.phone());
-            }
-            case "user.updated" -> {
-               UserEvent.Updated e = jsonMapper.treeToValue(payloadNode, UserEvent.Updated.class);
-                yield String.format("Создан пользователь «%s» (телефон: %s)",
-                        e.name(), e.phone());
-            }
-            case "user.deleted" -> {
-                UserEvent.Deleted e = jsonMapper.treeToValue(payloadNode, UserEvent.Deleted.class);
-                yield String.format("Удаления пользователя «%s» (почта: %s)",
-                        e.name(), e.mail());
-            }
             case "robot.created" -> {
                 RobotEvent.Created e = jsonMapper.treeToValue(payloadNode, RobotEvent.Created.class);
                 yield String.format("Создан датчик «%s» название датчика %s",
@@ -102,7 +86,7 @@ public class AuditEventListener {
             }
             case "robot.updated" -> {
                RobotEvent.Updated e = jsonMapper.treeToValue(payloadNode, RobotEvent.Updated.class);
-                yield String.format("Создан датчик «%s» название датчика %s",
+                yield String.format("Обнавлён датчик «%s» название датчика %s",
                         e.robotId(), e.name());
             }
             case "robot.deleted" -> {

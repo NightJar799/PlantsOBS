@@ -8,8 +8,7 @@ public sealed interface HomePlantEvent {
             String note,
             String species,
             Integer age,
-            Long plantSampleId,
-            Long userId
+            Long plantSampleId
     ) implements HomePlantEvent {}
 
     record Updated(

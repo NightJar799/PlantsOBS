@@ -1,6 +1,8 @@
 package org.plrest.graphql.fetcher;
 
 import com.netflix.graphql.dgs.DgsComponent;
+import com.netflix.graphql.dgs.DgsData;
+import com.netflix.graphql.dgs.DgsDataFetchingEnvironment;
 import com.netflix.graphql.dgs.DgsMutation;
 import com.netflix.graphql.dgs.DgsQuery;
 import com.netflix.graphql.dgs.InputArgument;
@@ -9,12 +11,15 @@ import java.util.Collections;
 import java.util.List;
 
 import org.obs.dto.GrowthCharResponse;
+import org.obs.dto.HomePlantResponse;
 import org.obs.dto.RobotRequest;
 import org.obs.dto.RobotResponse;
+import org.obs.exceptions.ResourceNotFoundException;
 import org.plrest.graphql.types.RobotConnectionGql;
 import org.plrest.graphql.types.PageInfoGql;
 import org.plrest.graphql.types.CreateRobotInputGql;
 import org.plrest.graphql.types.UpdateRobotInputGql;
+import org.plrest.service.PlantService;
 import org.plrest.service.RobotService;
 import org.springframework.data.domain.Page;
 
@@ -22,9 +27,21 @@ import org.springframework.data.domain.Page;
 public class RobotDataFetcher {
 
     private final RobotService robotService;
+    private final PlantService plantService;
 
-    public RobotDataFetcher(RobotService robotService) {
+    public RobotDataFetcher(RobotService robotService, PlantService plantService) {
         this.robotService = robotService;
+        this.plantService = plantService;
+    }
+
+    @DgsData(parentType = "Robot", field = "homePlant")
+    public HomePlantResponse getHomePlant(DgsDataFetchingEnvironment env) {
+        RobotResponse robot = env.getSource();
+        Long plantId = robot.getPlantId();
+        if (plantId == null) {
+            throw new ResourceNotFoundException("Растение не найдено для робота " + robot.getId(), plantId);
+        }
+        return plantService.findById(plantId);
     }
 
     @DgsQuery
