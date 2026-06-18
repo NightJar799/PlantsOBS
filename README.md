@@ -1,14 +1,17 @@
 # Pet-проект plantOBS
 
-Это pet-проект реализующий систему мониторинга растения при помощи различных датчиков всего в проекте 4 микросервисов:
+Это pet-проект реализующий систему мониторинга растения при помощи различных датчиков всего в проекте 6 микросервисов:
 1. plantREST - реализация контракта через API REST и GraphQL
-2. authREST - микро-сервис авторизации через jwt token с сохраненияем пользователя в базу данных
-3. auditService - сервис сбора записей и перенапрравления запросов из rabbitMQ
-4. RabbitMQ - шина проекта
+2. notification-service - сервис уведомлений (WebSocket + RabbitMQ), заменивший authREST
+3. auditService - сервис сбора записей и перенаправления запросов из rabbitMQ
+4. grpc-analytics-server - gRPC-сервер для аналитики растений (вычисление метрик)
+5. grpc-robot-customise-client - gRPC-клиент, слушает RabbitMQ и вызывает grpc-analytics-server
+6. RabbitMQ - шина проекта (не является микросервисом, но используется для обмена событиями)
 
 ## Контракты
 1. plantOBS - контракт для RESTAPI
 2. plantrmq - общая библиотека событий rabbitMQ
+3. plants-grpc-contract - gRPC-контракт (определения .proto и сгенерированные стабы)
 
 ## Библиотеки и фреймворки в plantOBS 
 
@@ -45,30 +48,43 @@
 | Netflix DGS Extended Scalars | Поддержка дополнительных скаляров |
 | GraphiQL Spring Boot Starter | Интерактивная GraphQL-консоль |
 
-## 4. authREST (сервис аутентификации)
+## 4. notification-service (сервис уведомлений)
 | Библиотека / Фреймворк | Назначение |
 |------------------------|-------------|
-| Spring Boot Starter Web | REST-контроллеры |
-| Spring Boot Starter Security | Аутентификация, JWT-фильтры |
-| Spring Boot Starter Data JPA | Хранение пользователей и ролей |
-| Spring Boot Starter Validation | Валидация запросов |
-| Spring Boot Starter AMQP | Отправка событий в RabbitMQ |
-| JJWT (api, impl, jackson) | Генерация и проверка JWT-токенов |
-| PostgreSQL | Драйвер БД |
-| Jackson Databind + JSR310 | JSON-сериализация LocalDateTime |
-| plantrmq | DTO для аудита |
-| Lombok | Упрощение кода |
+| Spring Boot Starter WebSocket | WebSocket-поддержка для отправки уведомлений в реальном времени |
+| Spring Boot Starter AMQP | Потребление событий из RabbitMQ |
+| Spring Boot Starter Web | REST-эндпоинты |
+| Spring Boot Starter Actuator | Метрики и healthcheck |
+| plantrmq | DTO для десериализации событий |
+| Jackson Databind + JSR310 | JSON-сериализация/десериализация LocalDateTime |
 
-## 5. audit-service (сервис аудита)
+## 5. auditService (сервис аудита)
 | Библиотека / Фреймворк | Назначение |
 |------------------------|-------------|
 | Spring Boot Starter AMQP | Потребление сообщений из RabbitMQ |
 | Spring Boot Starter Web | REST-эндпоинт для просмотра логов |
 | Spring Boot Starter Actuator | Метрики, healthcheck |
 | plantrmq | DTO для десериализации событий |
-| Jackson Databind + JSR310 | Преобразование JSON → объекты |
+| Jackson Databind + JSR310 | Преобразование JSON в объекты |
 
----
+## 6. grpc-analytics-server (gRPC-сервер аналитики)
+| Библиотека / Фреймворк | Назначение |
+|------------------------|-------------|
+| Spring Boot Starter Web | Actuator / health-проверки |
+| Spring Boot Starter Actuator | Метрики и healthcheck |
+| plants-grpc-contract | Сгенерированные gRPC-стабы (сервисный интерфейс) |
+| gRPC Netty Shaded | Транспортный уровень для gRPC-сервера |
+
+## 7. grpc-robot-customise-client (gRPC-клиент, слушает RabbitMQ)
+| Библиотека / Фреймворк | Назначение |
+|------------------------|-------------|
+| Spring Boot Starter Web | Actuator / health-проверки |
+| Spring Boot Starter AMQP | Потребление событий из RabbitMQ |
+| Spring Boot Starter Actuator | Метрики и healthcheck |
+| plants-grpc-contract | Сгенерированные gRPC-стабы |
+| gRPC Netty Shaded | Транспортный уровень для gRPC-клиента |
+| plantrmq | DTO для десериализации событий из RabbitMQ |
+| Jackson Databind + JSR310 | JSON-сериализация/десериализация |
 
 ## Общие технологии
 | Технология | Назначение |
